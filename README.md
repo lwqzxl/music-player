@@ -84,7 +84,9 @@ https://你的域名/api/delete/music?password=管理密码&all=true
 https://你的域名/music/歌曲名-歌手.文件后缀名
 
 构建Docker镜像GitHub Actions 工作流模板
-
+```
+.github/workflows/build-and-push.yml
+```
 ```
 name: Build and Push Docker Image
 
