@@ -4,18 +4,10 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'public/**'
-      - 'app.js'
-      - 'Dockerfile'
-      - 'package.json'
-    paths-ignore:
-      - 'music/**'
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -40,10 +32,10 @@ jobs:
         with:
           context: .
           push: true
-          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/lwqzxl/player:latest
+          platforms: linux/amd64,linux/arm64
           labels: |
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.source=https://github.com/lwqzxl/player
             org.opencontainers.image.description=Music Player Docker Image
             org.opencontainers.image.licenses=MIT
           cache-from: type=gha
