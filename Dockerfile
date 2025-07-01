@@ -12,4 +12,7 @@ RUN apk update && apk upgrade && \
     npm install && \
     chmod -R 777 /app/music || true
 
-CMD ["npm", "start"]
+COPY sync.sh /app/sync.sh
+RUN chmod +x /app/sync.sh
+
+CMD ["sh", "-c", "npm start & while true; do /app/sync.sh; sleep 300; done"]
