@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'player/**'
+      - '!player/music/**'
   workflow_dispatch:
 
 jobs:
   build:
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,14 +31,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - id: lower-repo
+        shell: bash
+        run: echo "repository=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/lwqzxl/player:latest
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:latest
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.sha }}
           labels: |
-            org.opencontainers.image.source=https://github.com/lwqzxl/player
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=Music Player Docker Image
             org.opencontainers.image.licenses=MIT
           cache-from: type=gha
