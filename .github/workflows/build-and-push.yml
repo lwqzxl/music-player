@@ -9,7 +9,8 @@ on:
       - 'app.js'
       - 'Dockerfile'
       - 'package.json'
-      - '!music/**'
+    paths-ignore:
+      - 'music/**'
   workflow_dispatch:
 
 jobs:
@@ -40,9 +41,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: |
-            ghcr.io/lwqzxl/player:latest
-            ghcr.io/lwqzxl/player:${{ github.sha }}
+          tags: ghcr.io/lwqzxl/player:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=Music Player Docker Image
